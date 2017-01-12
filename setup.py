@@ -10,8 +10,10 @@ import os
 import os.path as op
 import distutils.spawn as ds
 import distutils.dir_util as dd
+import distutils.file_util as df
 
 root_dir = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
+build_root = root_dir
 
 
 class build_clib(_build_clib.build_clib):
@@ -22,12 +24,17 @@ class build_clib(_build_clib.build_clib):
             sys.exit(-1)
 
         print("Configuring edlib build with CMake.... ")
-        dd.mkpath(op.join(root_dir, 'build'))
+        dd.mkpath(op.join(build_root, 'build'))
+        dd.mkpath(op.join(build_root, 'lib'))
         try:
             cwd = os.getcwd()
-            os.chdir(op.join(root_dir, 'build'))
+            os.chdir(op.join(build_root, 'build'))
             ds.spawn(['cmake', op.join(root_dir, 'edlib')])
             ds.spawn(['make'])
+            df.move_file(
+                op.join(build_root, 'build', 'lib', 'libedlib.so'),
+                op.join(build_root, 'lib')
+            )
             os.chdir(cwd)
         except ds.DistutilsExecError:
             print("Error while running cmake")
@@ -35,6 +42,7 @@ class build_clib(_build_clib.build_clib):
             print("You may also try editing the settings in CMakeLists.txt file and re-running setup")
             sys.exit(-1)
         super().run()
+
 
 setup(
     name="edlib",
