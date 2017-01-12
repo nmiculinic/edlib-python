@@ -1,10 +1,6 @@
 import os
 import ctypes
 
-
-
-
-
 class Edlib:
 
     class _EdlibAlignConfig(ctypes.Structure):
@@ -34,14 +30,14 @@ class Edlib:
             ctypes.c_char_p,
             ctypes.c_int
         )
-        self._align_f = align_prototype(('edlibAlign', self.libedlib))
+        self._align_f = align_prototype(('edlibAlign', self._libedlib))
 
         default_conf_prototype = ctypes.CFUNCTYPE(Edlib._EdlibAlignConfig)
         self._default_conf_f = default_conf_prototype(
-            ('edlibDefaultAlignConfig', self.libedlib))
+            ('edlibDefaultAlignConfig', self._libedlib))
 
     def align(self, query, target):
-        default_conf = self.default_conf_f()
+        default_conf = self._default_conf_f()
 
         query_c_arr = ctypes.c_char_p(query.encode())
         target_c_arr = ctypes.c_char_p(target.encode())
@@ -54,8 +50,10 @@ class Edlib:
 
 def demo():
     edlib = Edlib()
-    result = edlib.align("aaa", "bbb")
+    result = edlib.align("aaa", "tttttaaattttt")
     print(result.editDistance)
+    print(result.startLocations[0])
+    print(result.endLocations[0])
 
 if __name__=="__main__":
     demo()
