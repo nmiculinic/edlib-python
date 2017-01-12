@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
 from setuptools import setup
-import distutils.command.build as _build
-import distutils.command.build_clib as _build_clib
-import setuptools.command.install as _install
+
+# from setuptools.command import install
+from distutils.command.build import build
 
 import sys
 import os
@@ -16,7 +16,7 @@ root_dir = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
 build_root = root_dir
 
 
-class build_clib(_build_clib.build_clib):
+class build(build):
     def run(self):
         if ds.find_executable('cmake') is None:
             print("CMake  is required to build SimX")
@@ -48,18 +48,12 @@ setup(
     name="edlib",
     version='0.1',
     description='edlib bindings',
-    # requires = ["greenlet"],
-    # install_requires = ["greenlet"],
-    include_package_data=True,
-    # url = 'http://simx.lanl.gov',
-    # author='Sunil Thulasidasan, Lukas Kroc and others',
-    # author_email = 'simx-dev@lanl.gov',
+    url='https://github.com/nmiculinic/edlib-python',
     license="MIT",
-    # platforms = ['GNU/Linux', 'Unix', 'Mac OS-X'],
-
-    # ext_modules is not present here. This will be generated through CMake via the
-    # build or install commands
-    cmdclass={'build_clib': build_clib},
-    # zip_safe=False,
-    # packages=['simx', 'simx.core', 'simx.os'],
+    packages=['edlib'],
+    cmdclass={'build': build},
+    data_files=[('lib', ['lib/libedlib.so'])],
+    package_dir={'edlib': 'py-edlib'},
+    requires=[],
+    zip_safe=False,
 )
