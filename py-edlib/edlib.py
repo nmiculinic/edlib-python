@@ -100,11 +100,8 @@ class Edlib:
 
     @staticmethod
     def _wrap_results(edlib_result):
-        starts, ends = [], []
-
-        for i in range(edlib_result.numLocations):
-            starts.append(edlib_result.startLocations[i])
-            ends.append(edlib_result.endLocations[i])
+        starts = [edlib_result.startLocations[i] for i in range(edlib_result.numLocations)]
+        ends = [edlib_result.endLocations[i] for i in range(edlib_result.numLocations)]
 
         return AligmentResult(
             edlib_result.editDistance,
