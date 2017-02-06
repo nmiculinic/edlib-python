@@ -24,7 +24,7 @@ def build_me():
 
     print("Configuring edlib build with CMake.... ")
     dd.mkpath(op.join(build_root, 'build'))
-    dd.mkpath(op.join(build_root, 'lib'))
+    dd.mkpath(op.join(build_root, 'py-edlib', 'lib'))
     try:
         cwd = os.getcwd()
         os.chdir(op.join(build_root, 'build'))
@@ -32,7 +32,7 @@ def build_me():
         ds.spawn(['make'])
         df.move_file(
             op.join(build_root, 'build', 'lib', 'libedlib.so'),
-            op.join(build_root, 'lib')
+            op.join(build_root, 'py-edlib', 'lib')
         )
         os.chdir(cwd)
     except ds.DistutilsExecError:
@@ -60,10 +60,10 @@ setup(
     description='edlib bindings',
     url='https://github.com/nmiculinic/edlib-python',
     license="MIT",
-    packages=['edlib'],
     cmdclass={'build': build, 'install': install},
-    data_files=[('lib', ['lib/libedlib.so'])],
+    packages=['edlib'],
     package_dir={'edlib': 'py-edlib'},
+    package_data={'edlib': ['lib/*']},
     requires=[],
     zip_safe=False,
 )

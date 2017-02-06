@@ -77,7 +77,7 @@ class Edlib:
     def __init__(self):
         # temp hardcoded load path,
         root_dir = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
-        path = os.path.join(root_dir, '..', 'lib', 'libedlib.so')
+        path = os.path.join(root_dir, 'lib', 'libedlib.so')
         self._libedlib = c.cdll.LoadLibrary(path)
         self._initialize_functions()
 

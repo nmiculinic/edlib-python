@@ -1,3 +1,3 @@
-from edlib import AligmentResult, Edlib
+from .edlib import AligmentResult, Edlib
 
 __all__ = ["AligmentResult", "Edlib"]
