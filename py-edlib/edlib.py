@@ -2,7 +2,7 @@ import ctypes as c
 import os
 
 
-class AligmentResult:
+class AlignmentResult:
     def __init__(self, edit_distance, start_locations, end_locations, alignment, alphabet_size):
         self.edit_distance = edit_distance
         self.start_locations = start_locations
@@ -22,6 +22,11 @@ class Edlib:
     EDLIB_EDOP_DELETE 2   //!< Deletion from target = insertion to query.
     EDLIB_EDOP_MISMATCH 3 //!< Mismatch.
     """
+
+    EDLIB_EDOP_MATCH = 0  # Match.
+    EDLIB_EDOP_INSERT = 1  # Insertion to target = deletion from query.
+    EDLIB_EDOP_DELETE = 2  # Deletion from target = insertion to query.
+    EDLIB_EDOP_MISMATCH = 3  # Mismatch.
 
     '''
     Global method. This is the standard method.
@@ -103,7 +108,7 @@ class Edlib:
         starts = [edlib_result.startLocations[i] for i in range(edlib_result.numLocations)]
         ends = [edlib_result.endLocations[i] for i in range(edlib_result.numLocations)]
 
-        return AligmentResult(
+        return AlignmentResult(
             edlib_result.editDistance,
             starts,
             ends,
